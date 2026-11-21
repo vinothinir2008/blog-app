@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MyBlog</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav id="nav"></nav>
+<div class="container">
+  <h2>Latest Posts</h2>
+  <div id="list"></div>
+</div>
+<script src="common.js"></script>
+<script>
+navbar();
+(async () => {
+  const posts = await api('/posts');
+  document.getElementById('list').innerHTML = posts.map(p => `
+    <div class="card" style="margin-bottom:15px">
+      <h3><a href="post.html?id=${p._id}">${esc(p.title)}</a></h3>
+      <p>${esc(p.content.slice(0, 150))}${p.content.length > 150 ? '...' : ''}</p>
+      <small>By ${esc(p.authorName)} | ${new Date(p.createdAt).toLocaleDateString()}</small>
+    </div>`).join('') || '<p>No posts yet. Be the first to write!</p>';
+})();
+</script>
+</body>
+</html><!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MyBlog</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav id="nav"></nav>
+<div class="container">
+  <h2>Latest Posts</h2>
+  <div id="list"></div>
+</div>
+<script src="common.js"></script>
+<script>
+navbar();
+(async () => {
+  const posts = await api('/posts');
+  document.getElementById('list').innerHTML = posts.map(p => `
+    <div class="card" style="margin-bottom:15px">
+      <h3><a href="post.html?id=${p._id}">${esc(p.title)}</a></h3>
+      <p>${esc(p.content.slice(0, 150))}${p.content.length > 150 ? '...' : ''}</p>
+      <small>By ${esc(p.authorName)} | ${new Date(p.createdAt).toLocaleDateString()}</small>
+    </div>`).join('') || '<p>No posts yet. Be the first to write!</p>';
+})();
+</script>
+</body>
+</html>

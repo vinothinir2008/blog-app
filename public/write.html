@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Write Post</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav id="nav"></nav>
+<div class="container">
+  <div class="card">
+    <h2 id="heading">Write a Post</h2>
+    <input id="title" placeholder="Title">
+    <textarea id="content" rows="10" placeholder="Write your post..."></textarea>
+    <button onclick="save()">Publish</button>
+    <p id="msg" style="color:red"></p>
+  </div>
+</div>
+<script src="common.js"></script>
+<script>
+if (!token()) location.href = 'login.html';
+navbar();
+const id = new URLSearchParams(location.search).get('id');
+if (id) {
+  document.getElementById('heading').innerText = 'Edit Post';
+  api('/posts/' + id).then(p => {
+    document.getElementById('title').value = p.title;
+    document.getElementById('content').value = p.content;
+  });
+}
+async function save() {
+  const body = {
+    title: document.getElementById('title').value.trim(),
+    content: document.getElementById('content').value.trim()
+  };
+  try {
+    const p = id ? await api('/posts/' + id, 'PUT', body) : await api('/posts', 'POST', body);
+    location.href = 'post.html?id=' + p._id;
+  } catch (e) { document.getElementById('msg').innerText = e.message; }
+}
+</script>
+</body>
+</html>
